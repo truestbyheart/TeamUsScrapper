@@ -9,7 +9,7 @@ class TodayTvSeriesController {
         const { searchTerm } = req.params;
         const { isView } = req.query;
         const Data: any[] = [];
-        let eps: IEpisode = {};
+        let eps = {};
 
         /**
          * @author daniel mwangila
@@ -26,16 +26,17 @@ class TodayTvSeriesController {
         const $ = cheerio.load(data);
         const list = $(".row2");
         const coverImage = $(".imageseries1").find("img").attr("src");
-        eps.coverImage = coverImage;
 
         list.each((i, element) => {
             const episode = $(element).find(".cell2");
             const size = $(element).find(".cell3");
             const link = $(element).find(".cell4 a").attr("href");
-
-            eps.episode = episode.text();
-            eps.size = size.text();
-            eps.link = link;
+            eps = {
+                episode: episode.text(),
+                size: size.text(),
+                link,
+                coverImage,
+            };
 
             Data.push(eps);
         });

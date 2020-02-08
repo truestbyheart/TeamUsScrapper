@@ -2,16 +2,28 @@
   "name": "teamusscrapper",
   "version": "1.0.2",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "./node_modules/.bin/ts-node src/index.ts",
-    "lint": "eslint",
+    "start": "node ./dist/src/index.js",
+    "dev": "NODE_ENV=development npm-run-all postinstall start",
+    "lint": "tslint -c tslint.json -p tsconfig.json --fix",
+    "clean": "rimraf dist/*",
+    "postinstall": "npm-run-all clean tsc copy-assets",
+    "tsc": "tsc",
+    "copy-assets": "ts-node tools/copyAsset",
     "test": "nyc --reporter=html --reporter=text ./node_modules/.bin/mocha  ./tests/*.test.js --require @babel/register --timeout 7000ms --exit",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "dev": "nodemon --exec npm run start"
+    "start:dev": "nodemon --watch ./ -e ts,pug,css --exec npm run dev"
+  },
+  "engines": {
+    "node": "11.14.0"
   },
   "keywords": [],
-  "author": "",
+  "author": "Daniel Charles Mwangila",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/truestbyheart/TeamUsScrapper"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/body-parser": "^1.17.1",
@@ -27,7 +39,7 @@
     "fs-extra": "^8.1.0",
     "nodemon": "^1.19.3",
     "npm-run-all": "^4.1.5",
-    "rimraf": "^3.0.0",
+    "rimraf": "^3.0.1",
     "shelljs": "^0.8.3",
     "ts-node": "^8.4.1",
     "tslint": "^5.20.0",
